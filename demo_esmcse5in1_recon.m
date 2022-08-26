@@ -1,7 +1,7 @@
 % demo_siemens_mcse_lowrank_subspace_recon.m
-% Written by Nam Gyun Lee
-% Email: namgyunl@usc.edu, ggang56@gmail.com (preferred)
-% Started: 07/15/2021, Last modified: 04/15/2022
+% Written by Bochao Li
+% Email: bochaoli@usc.edu
+% Started: 07/15/2021, Last modified: 08/26/2022
 
 %% Clean slate
 close all; clear; clc;
