@@ -146,12 +146,8 @@ parfor ndf = 1:Ndf
         nR2
         for nR2p = 1:NR2p
             for ntime = 1:sim_times
-                %y = [acquired_samples_noisy_real(:,ntime,nT2p,nT2);acquired_samples_noisy_img(:,ntime,nT2p,nT2) ];
-                %x0 = [acquired_samples_noisy_real(3,ntime,nT2p,nT2),acquired_samples_noisy_img(3,ntime,nT2p,nT2),50, 10].'; % inital values [a.u., kHz, kHz,Hz]
-                %E = @(x) dictionary_complex_mixed_rho_t2_t2prime_B0_fitting_esmcse(x, y, t_shift, t_SE);
                 y =  [real(acquired_samples_noisy(:,ntime,nR2p,nR2,ndf));imag(acquired_samples_noisy(:,ntime,nR2p,nR2,ndf))];
                 x0 = [real(acquired_samples_noisy(3,ntime,nR2p,nR2)),imag(acquired_samples_noisy(3,ntime,nR2p,nR2)),16/1000, 10/1000, 0].';
-                %E = @(x) dictionary_mixed_rho_r2_r2prime_B0_fitting_esmcse(x, y, t_shift, t_SE);
                 E = @(x) dictionary_seperate_mixed_rho_t2_t2prime_B0_fitting_esmcse(x, y, t_shift, t_SE);
                 options = optimoptions('lsqnonlin','Display','none');
                 [x_out_dictionary(:,ntime,nR2p,nR2,ndf),resnorm(ntime,nR2p,nR2,ndf),residual(:,ntime,nR2p,nR2,ndf),exitflag,output] = lsqnonlin(E,x0,[-Inf,-Inf,-Inf,-Inf,-Inf],[Inf,Inf,Inf,Inf,Inf],options);
@@ -163,9 +159,9 @@ toc
 
 
 %% analyze the error
-R2_est          = squeeze(x_out_dictionary_sp(3,:,:,:,:)) * 1e3;  %   [Hz]
-R2p_est         = squeeze(x_out_dictionary_sp(4,:,:,:,:)) * 1e3;  %   [Hz]
-df_est          = squeeze(x_out_dictionary_sp(5,:,:,:,:)) * 1e3;  %   [Hz]
+R2_est          = squeeze(x_out_dictionary(3,:,:,:,:)) * 1e3;  %   [Hz]
+R2p_est         = squeeze(x_out_dictionary(4,:,:,:,:)) * 1e3;  %   [Hz]
+df_est          = squeeze(x_out_dictionary(5,:,:,:,:)) * 1e3;  %   [Hz]
 
 error_R2        = R2_est - permute(repmat(R2_array.',1,sim_times,NR2p,Ndf),[2,3,1,4]);
 error_R2p       = R2p_est - permute(repmat(R2p_array.',1,sim_times,NR2,Ndf),[2,1,3,4]);
